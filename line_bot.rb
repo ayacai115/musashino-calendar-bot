@@ -9,10 +9,7 @@ def client
   }
 end
 
-def line_bot(event:, context:)
-  puts "event: ", event
-  puts "context: ", context.inspect
-  
+def answer(event:, context:)
   # ヘッダがあるときだけ署名チェック
   # headers = event["headers"]
   # signiture = headers['X-Line-Signature'] if headers

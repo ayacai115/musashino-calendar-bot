@@ -15,6 +15,11 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     jmespath (1.4.0)
     line-bot-api (1.17.0)
+    mini_portile2 (2.5.0)
+    nokogiri (1.11.1)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
+    racc (1.5.2)
 
 PLATFORMS
   ruby
@@ -22,6 +27,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-lambda
   line-bot-api
+  nokogiri
 
 BUNDLED WITH
    2.1.2
