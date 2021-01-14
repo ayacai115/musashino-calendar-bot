@@ -8,7 +8,7 @@ def client
   }
 end
 
-def lambda_handler(event:, context:)
+def line_bot(event:, context:)
   # puts "event: ", event
   # puts "context: ", context.inspect
   
