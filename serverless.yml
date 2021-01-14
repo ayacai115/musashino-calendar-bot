@@ -64,6 +64,7 @@ custom:
 #    - exclude-me-dir/**
 
 functions:
+  # LINE応答の口
   line_bot:
     handler: line_bot.answer
 #    The following are a few example events you can configure
@@ -73,6 +74,9 @@ functions:
       - http:
           path: /
           method: post
+  # 武蔵野市HPからカレンダー情報を取得
+  scraper:
+    handler: scraper.run
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
