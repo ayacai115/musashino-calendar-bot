@@ -1,3 +1,4 @@
+require 'json'
 require 'line/bot'
 
 def client
@@ -9,14 +10,14 @@ def client
 end
 
 def line_bot(event:, context:)
-  # puts "event: ", event
-  # puts "context: ", context.inspect
+  puts "event: ", event
+  puts "context: ", context.inspect
   
   # ヘッダがあるときだけ署名チェック
   # headers = event["headers"]
   # signiture = headers['X-Line-Signature'] if headers
   
-  events = client.parse_events_from(event.to_json)
+  events = client.parse_events_from(event['body'])
   events.each do |event|
     case event
     # メッセージだったとき
