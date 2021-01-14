@@ -28,8 +28,11 @@ provider:
     shouldStartNameWithService: true
 
 # you can overwrite defaults here
-  stage: dev
+  stage: ${opt:stage, self:custom.defaultStage}
   region: ap-northeast-1
+  
+custom:
+  defaultStage: dev
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -126,7 +129,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: Musashino-Kodomo-Calendar
+        TableName: Musashino-Kodomo-Calendar-${self:provider.stage}
         
 #    NewResource:
 #      Type: AWS::S3::Bucket
