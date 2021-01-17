@@ -32,9 +32,7 @@ def run(event:, context:)
     end
   end
   
-  binding.pry
-  # TODO: DynamoDBにinsert/update
-  # TODO: 既存のデータとのdiffのみを更新する処理を追加
+  # TODO: DynamoDBにdelete -> insert
 
   # { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
 end
