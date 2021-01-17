@@ -23,7 +23,7 @@ def run(event:, context:)
       booking_required = event.text.include?("事前申込必要")
 
       table_item = {
-        date: "#{year_month}-#{date}", # Dateでパースt
+        date: Date.parse("#{year_month}-#{date}"), 
         title: title,
         url: "http://www.city.musashino.lg.jp" + path,
         booking_required: booking_required
@@ -32,6 +32,7 @@ def run(event:, context:)
     end
   end
   
+  binding.pry
   # TODO: DynamoDBにinsert/update
   # TODO: 既存のデータとのdiffのみを更新する処理を追加
 
@@ -49,4 +50,4 @@ def setup_doc(url)
   doc
 end
 
-# run(event: nil, context: nil) # テスト用
+run(event: nil, context: nil) # テスト用
