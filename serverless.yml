@@ -118,23 +118,23 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: id
-            AttributeType: S
+            AttributeName: year_month
+            AttributeType: N
           - 
-            AttributeName: name
-            AttributeType: S
+            AttributeName: date_and_id
+            AttributeType: N
         KeySchema:
           -
-            AttributeName: id
+            AttributeName: year_month
             KeyType: HASH
           -
-            AttributeName: name
+            AttributeName: date_and_id
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: Musashino-Kodomo-Calendar-${self:provider.stage}
-        
+        TableName: musashino-kosodate-events-${self:provider.stage}
+
 #    NewResource:
 #      Type: AWS::S3::Bucket
 #      Properties:
