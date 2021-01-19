@@ -66,7 +66,7 @@ custom:
 functions:
   # LINE応答の口
   line_bot:
-    handler: line_bot.answer
+    handler: app/lambda/line_bot_function.answer
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -76,7 +76,7 @@ functions:
           method: post
   # 武蔵野市HPからカレンダー情報を取得
   scraper:
-    handler: scraper.run
+    handler: app/lambda/scraper_function.run
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
