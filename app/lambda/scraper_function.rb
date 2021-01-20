@@ -1,11 +1,11 @@
+require 'pry'
 require_relative '../models/kosodate_events_scraper.rb'
 
 def run(event:, context:)
   # 1. Scraperがインスタンスを返す
-  # 2. DYnamoDBに保存する
-  table_items = KosodateEventsScraper.run
+  events = KosodateEventsScraper.run
 
-  # TODO: DynamoDBにdelete -> insert
+  # 2. DynamoDB delete -> insert
 
   # { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
 end
