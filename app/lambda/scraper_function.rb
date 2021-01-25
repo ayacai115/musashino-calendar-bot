@@ -8,6 +8,7 @@ def run(event:, context:)
   event = events.first
   KosodateEvent.create(event)
 
+  # binding.pry
   # 2. DynamoDB delete -> insert
 
   # { statusCode: 200, body: JSON.generate('Hello from Lambda!') }

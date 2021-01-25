@@ -11,6 +11,16 @@ class DynamoDB
     def put(table_name, item) # 1件insert
       client.put_item(table_name: table_name, item: item)
     end
+
+    def get
+      # (table_name, key)
+      key = {
+        year_month: '2021-1',
+        date_and_id: '4-1'
+      }
+      table_name = 'musashino-kosodate-events-local'
+      client.get_item(table_name: table_name, key: key)
+    end
     
 
     private

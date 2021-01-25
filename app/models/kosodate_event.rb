@@ -16,6 +16,9 @@ class KosodateEvent
 
       DynamoDB.put(TABLE_NAME, item)
     end
+
+    def where(year:, month:, date: nil)
+    end
   end
 
   def initialize(date:, same_date_index:, name:, url:, booking_required:)
