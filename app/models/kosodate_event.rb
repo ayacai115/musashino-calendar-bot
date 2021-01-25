@@ -7,8 +7,8 @@ class KosodateEvent
   class << self
     def create(event)
       item = {
-        year_month: "#{event.date.year}-#{event.date.month}",
-        date_and_id: "#{event.date.day}-#{event.same_date_index}",
+        year_month: event.date.strftime("%Y-%m"),
+        date_and_id: "#{event.date.strftime("%d")}-#{event.same_date_index}",
         name: event.name,
         url: event.url,
         booking_required: event.booking_required

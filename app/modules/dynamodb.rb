@@ -15,8 +15,8 @@ class DynamoDB
     def get
       # (table_name, key)
       key = {
-        year_month: '2021-1',
-        date_and_id: '4-1'
+        year_month: '2021-01',
+        date_and_id: '04-1'
       }
       table_name = 'musashino-kosodate-events-local'
       client.get_item(table_name: table_name, key: key)
