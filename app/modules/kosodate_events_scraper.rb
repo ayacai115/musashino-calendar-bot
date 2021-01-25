@@ -49,7 +49,7 @@ class KosodateEventsScraper
 
           items << KosodateEvent.new(
             date: Date.parse("#{year_month}-#{date}"),
-            same_date_index: i,
+            same_date_index: i + 1,
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required

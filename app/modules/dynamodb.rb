@@ -11,6 +11,10 @@ class DynamoDB
     def put(table_name, item) # 1件insert
       client.put_item(table_name: table_name, item: item)
     end
+
+    def get(table_name, key)
+      client.get_item(table_name: table_name, key: key)
+    end
     
 
     private
