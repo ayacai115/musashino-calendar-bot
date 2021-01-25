@@ -36,20 +36,21 @@ class KosodateEventsScraper
 
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
 
-      items = []
+      events = []
       rows.each do |row|
-        date = row.xpath("th").text.scan(/\d+/)[0]
+        date_element = row.xpath("th").text.scan(/\d+/)[0]
+        date = Date.parse("#{year_month}-#{date_element}") 
         
-        events = row.xpath("td/ul/li")
+        list_items = row.xpath("td/ul/li")
 
-        events.each_with_index do |event, i|
-          name = event.xpath("a").text
-          path = event.xpath("a").attribute("href").value
-          booking_required = event.text.include?("事前申込必要")
+        list_items.each_with_index do |item, i|
+          name = item.xpath("a").text
+          path = item.xpath("a").attribute("href").value
+          booking_required = item.text.include?("事前申込必要")
 
-          items << KosodateEvent.new(
-            date: Date.parse("#{year_month}-#{date}"),
-            same_date_index: i + 1,
+          events << KosodateEvent.new(
+            year_month: date.strftime("%Y-%m"),
+            date_and_id: [date.strftime("%d"), i + 1].join('-'),
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required
@@ -57,9 +58,10 @@ class KosodateEventsScraper
         end
       end
 
+      KosodateEvent.bulk_insert(events)
       # ここでbulk-insertすべきでは？
       # KosodateEvent.create(event)って変
-      [year_month, items]
+      [year_month, events]
     end
   end
 end

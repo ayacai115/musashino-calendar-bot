@@ -2,19 +2,38 @@ require_relative '../modules/dynamodb.rb'
 
 class KosodateEvent
   TABLE_NAME = 'musashino-kosodate-events-local'.freeze
-  attr_reader :date, :same_date_index, :name, :url, :booking_required
+  attr_reader :year_month, :date_and_id, :name, :url, :booking_required
 
   class << self
-    def create(event)
-      item = {
-        year_month: event.date.strftime("%Y-%m"),
-        date_and_id: "#{event.date.strftime("%d")}-#{event.same_date_index}",
-        name: event.name,
-        url: event.url,
-        booking_required: event.booking_required
-      }
+    def bulk_insert(events)
+      requests = []
+      events.each do |event|
+        requests << {
+                      put_request: {
+                        item: {
+                          year_month: { s: event.year_month },
+                          date_and_id: { s: event.date_and_id }, 
+                          name: { s: event.name },
+                          url: { s: event.url },
+                          booking_required: { bool: event.booking_required }
+                        } 
+                      }
+                    }
+                      
+      end
 
-      DynamoDB.put(TABLE_NAME, item)
+      Aws.config.update(
+      endpoint: 'http://localhost:8000', # ローカル専用
+      region: 'ap-northeast-1'
+      )
+
+      client = Aws::DynamoDB::Client.new
+
+      client.batch_write_item({
+        request_items: {
+          TABLE_NAME: requests
+        }
+      })
     end
 
     def where(year: nil, month: nil, date: nil)
@@ -31,9 +50,9 @@ class KosodateEvent
     end
   end
 
-  def initialize(date:, same_date_index:, name:, url:, booking_required:)
-    @date = date
-    @same_date_index = same_date_index
+  def initialize(year_month:, date_and_id:, name:, url:, booking_required:)
+    @year_month = year_month
+    @date_and_id = date_and_id
     @name = name
     @url = url
     @booking_required = booking_required
