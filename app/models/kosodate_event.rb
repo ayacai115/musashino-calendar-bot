@@ -3,7 +3,6 @@ class KosodateEvent
 
   class << self
     def insert(year_month, events)
-      binding.pry
     end
   end
 
