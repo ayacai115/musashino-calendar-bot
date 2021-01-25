@@ -17,7 +17,17 @@ class KosodateEvent
       DynamoDB.put(TABLE_NAME, item)
     end
 
-    def where(year:, month:, date: nil)
+    def where(year: nil, month: nil, date: nil)
+      # year yyyy
+      # month mm
+      # date dd
+
+      key = {
+        year_month: '2021-01',
+        date_and_id: '04-1'
+      }
+
+      DynamoDB.get(TABLE_NAME, key)
     end
   end
 
