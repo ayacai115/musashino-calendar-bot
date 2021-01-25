@@ -1,4 +1,4 @@
-require_relative '../models/dynamodb.rb'
+require_relative '../modules/dynamodb.rb'
 
 class KosodateEvent
   TABLE_NAME = 'musashino-kosodate-events-local'.freeze

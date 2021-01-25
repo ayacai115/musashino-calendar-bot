@@ -1,6 +1,6 @@
 require 'pry'
 require 'aws-sdk-dynamodb'
-require_relative '../models/kosodate_events_scraper.rb'
+require_relative '../modules/kosodate_events_scraper.rb'
 
 def run(event:, context:)
   year_month, events = KosodateEventsScraper.run
