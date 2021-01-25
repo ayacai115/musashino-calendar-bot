@@ -3,18 +3,12 @@ require 'pry'
 
 class DynamoDB
   class << self
-    def list_tables
-    end
-
-    def create_events_in(months)
-      
-    end
-
-    # 指定した月のイベントを削除する
+    # TODO: 指定した月のイベントを削除する
     # ※更新時、全件削除したほうが差分をとるよりも楽なため
-    def delete_events_in(months)
+    def delete_events_in(year_month)
     end
 
+    def insert(year_month, )
     
 
     private

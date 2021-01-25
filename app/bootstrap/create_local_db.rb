@@ -46,11 +46,11 @@ def table_definition
     attribute_definitions: [
       {
         attribute_name: 'year_month',
-        attribute_type: 'N'
+        attribute_type: 'S'
       },
       {
         attribute_name: 'date_and_id',
-        attribute_type: 'N'
+        attribute_type: 'S'
       }
     ],
     provisioned_throughput: {

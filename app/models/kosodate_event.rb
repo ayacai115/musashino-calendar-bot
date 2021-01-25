@@ -1,9 +1,15 @@
 class KosodateEvent
-  attr_reader :date, :title, :url, :booking_required
+  attr_reader :date, :name, :url, :booking_required
 
-  def initialize(date:, title:, url:, booking_required:)
+  class << self
+    def insert(year_month, events)
+      binding.pry
+    end
+  end
+
+  def initialize(date:, name:, url:, booking_required:)
     @date = date
-    @title = title
+    @name = name
     @url = url
     @booking_required = booking_required
   end
