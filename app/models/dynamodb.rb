@@ -8,21 +8,8 @@ class DynamoDB
     def delete_events_in(year_month)
     end
 
-    def put(event) # 1件insert
-      item = {
-        year_month: "#{event.date.year}-#{event.date.month}",
-        date_and_id: "#{event.date.day}-2",
-        name: event.name,
-        url: event.url,
-        booking_required: event.booking_required
-      }
-
-      table_item = {
-        table_name: 'musashino-kosodate-events-local',
-        item: item
-      }
-
-      client.put_item(table_item)
+    def put(table_name, item) # 1件insert
+      client.put_item(table_name: table_name, item: item)
     end
     
 
