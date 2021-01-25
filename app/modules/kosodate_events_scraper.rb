@@ -41,13 +41,15 @@ class KosodateEventsScraper
         date = row.xpath("th").text.scan(/\d+/)[0]
         
         events = row.xpath("td/ul/li")
-        events.each do |event|
+
+        events.each_with_index do |event, i|
           name = event.xpath("a").text
           path = event.xpath("a").attribute("href").value
           booking_required = event.text.include?("事前申込必要")
 
           items << KosodateEvent.new(
-            date: Date.parse("#{year_month}-#{date}"), 
+            date: Date.parse("#{year_month}-#{date}"),
+            same_date_index: i,
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required
@@ -55,6 +57,8 @@ class KosodateEventsScraper
         end
       end
 
+      # ここでbulk-insertすべきでは？
+      # KosodateEvent.create(event)って変
       [year_month, items]
     end
   end

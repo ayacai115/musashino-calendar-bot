@@ -4,8 +4,8 @@ require_relative '../modules/kosodate_events_scraper.rb'
 
 def run(event:, context:)
   year_month, events = KosodateEventsScraper.run
-  event = events.first
 
+  event = events.first
   KosodateEvent.create(event)
 
   # 2. DynamoDB delete -> insert
