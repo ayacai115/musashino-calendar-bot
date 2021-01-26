@@ -113,6 +113,10 @@ functions:
 # you can add CloudFormation resource templates here
 resources:
   Resources:
+    Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: musashino-kosodate-events-${self:provider.stage}
     DynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
