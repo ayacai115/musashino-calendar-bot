@@ -50,7 +50,7 @@ class KosodateEventsScraper
 
           events << KosodateEvent.new(
             year_month: date.strftime("%Y-%m"),
-            date_and_id: [date.strftime("%d"), i + 1].join('-'),
+            date: date.strftime("%d"),
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required
@@ -58,10 +58,7 @@ class KosodateEventsScraper
         end
       end
 
-      KosodateEvent.bulk_insert(events)
-      # ここでbulk-insertすべきでは？
-      # KosodateEvent.create(event)って変
-      [year_month, events]
+      KosodateEvent.save(year_month, events)
     end
   end
 end

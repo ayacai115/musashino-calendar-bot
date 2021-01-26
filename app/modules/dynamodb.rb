@@ -3,12 +3,7 @@ require 'pry'
 
 class DynamoDB
   class << self
-    # TODO: 指定した月のイベントを削除する
-    # ※更新時、全件削除したほうが差分をとるよりも楽なため
-    def delete_events_in(year_month)
-    end
-
-    def put(table_name, item) # 1件insert
+    def put(table_name, item)
       client.put_item(table_name: table_name, item: item)
     end
 
