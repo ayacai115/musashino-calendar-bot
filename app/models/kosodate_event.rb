@@ -5,9 +5,9 @@ class KosodateEvent
   
   attr_reader :year_month # 2021-01
   attr_reader :date # 01
-  attr_reader :name # おやこひろば
-  attr_reader :url # http://www.city.musashino.lg.jp/shiminsanka/kodomokatei/sakuratsuzumijidoukan/1030899.html
-  attr_reader :booking_required # true
+  attr_reader :name
+  attr_reader :url 
+  attr_reader :booking_required
 
   class << self
     def save(year_month, events) # 1ヶ月分まとめて
@@ -29,7 +29,7 @@ class KosodateEvent
         year_month: date.strftime("%Y-%m"),
         data: hash.to_json
       }
-      
+
       DynamoDB.put(TABLE_NAME, item)
     end
 
