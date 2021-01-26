@@ -119,17 +119,11 @@ resources:
         AttributeDefinitions:
           -
             AttributeName: year_month
-            AttributeType: N
-          - 
-            AttributeName: date_and_id
-            AttributeType: N
+            AttributeType: S
         KeySchema:
           -
             AttributeName: year_month
             KeyType: HASH
-          -
-            AttributeName: date_and_id
-            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
