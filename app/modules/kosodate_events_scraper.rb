@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require 'aws-sdk-s3'
 require "pry"
 require_relative '../models/kosodate_event.rb'
 
@@ -58,9 +59,11 @@ class KosodateEventsScraper
         end
       end
 
-      KosodateEvent.bulk_insert(events)
-      # ここでbulk-insertすべきでは？
-      # KosodateEvent.create(event)って変
+      s3_client = Aws::S3::Client.new(region: 'ap-northeast-1')
+      buckets = s3_client.list_buckets.buckets
+      bucket = buckets.find {|bucket| bucket.name.start_with?('musashino-kosodate-events')}
+      # TODO: jsonファイルを作って置く
+
       [year_month, events]
     end
   end
