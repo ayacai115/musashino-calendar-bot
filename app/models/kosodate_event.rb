@@ -2,38 +2,35 @@ require_relative '../modules/dynamodb.rb'
 
 class KosodateEvent
   TABLE_NAME = 'musashino-kosodate-events-local'.freeze
-  attr_reader :year_month, :date_and_id, :name, :url, :booking_required
+  
+  attr_reader :year_month # 2021-01
+  attr_reader :date # 01
+  attr_reader :name
+  attr_reader :url 
+  attr_reader :booking_required
 
   class << self
-    def bulk_insert(events)
-      requests = []
+    def save(year_month, events) # 1ヶ月分まとめて
+      date = Date.parse("#{year_month}-1")
+      all_dates = (date..date.next_month).map { |d| d.strftime("%d") }
+      
+      hash = {}
+      all_dates.each { |date| hash[date] = [] }
+
       events.each do |event|
-        requests << {
-                      put_request: {
-                        item: {
-                          year_month: { s: event.year_month },
-                          date_and_id: { s: event.date_and_id }, 
-                          name: { s: event.name },
-                          url: { s: event.url },
-                          booking_required: { bool: event.booking_required }
-                        } 
-                      }
-                    }
-                      
+        hash[event.date] << {
+          name: event.name,
+          url: event.url,
+          booking_required: event.booking_required
+        }
       end
 
-      Aws.config.update(
-      endpoint: 'http://localhost:8000', # ローカル専用
-      region: 'ap-northeast-1'
-      )
+      item = {
+        year_month: date.strftime("%Y-%m"),
+        data: hash.to_json
+      }
 
-      client = Aws::DynamoDB::Client.new
-
-      client.batch_write_item({
-        request_items: {
-          TABLE_NAME: requests
-        }
-      })
+      DynamoDB.put(TABLE_NAME, item)
     end
 
     def where(year: nil, month: nil, date: nil)
@@ -43,16 +40,16 @@ class KosodateEvent
 
       key = {
         year_month: '2021-01',
-        date_and_id: '04-1'
+        date_and_id: '04-1' # あとで消す
       }
 
       DynamoDB.get(TABLE_NAME, key)
     end
   end
 
-  def initialize(year_month:, date_and_id:, name:, url:, booking_required:)
+  def initialize(year_month:, date:, name:, url:, booking_required:)
     @year_month = year_month
-    @date_and_id = date_and_id
+    @date = date
     @name = name
     @url = url
     @booking_required = booking_required

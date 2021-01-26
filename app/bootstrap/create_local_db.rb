@@ -38,20 +38,12 @@ def table_definition
         attribute_name: 'year_month',
         key_type: 'HASH'  # Partition key.
       },
-      {
-        attribute_name: 'date_and_id',
-        key_type: 'RANGE' # Sort key.
-      }
     ],
     attribute_definitions: [
       {
         attribute_name: 'year_month',
         attribute_type: 'S'
       },
-      {
-        attribute_name: 'date_and_id',
-        attribute_type: 'S'
-      }
     ],
     provisioned_throughput: {
       read_capacity_units: 1,

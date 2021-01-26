@@ -6,31 +6,8 @@ require_relative '../models/kosodate_event.rb'
 class KosodateEventsScraper
   URL = 'http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7'.freeze
 
-  # input: -
-  # output: KosodateEvents
-
   class << self
     def run
-      doc = setup_doc(URL)
-      year_month, items = scrape_calendar(doc)
-    end
-
-    private
-
-    def setup_doc(url)
-      charset = 'utf-8'
-      html = URI.open(url) { |f| f.read }
-      doc = Nokogiri::HTML.parse(html, nil, charset)
-
-      # <br>タグを改行（\n）に変えて置くとスクレイピングしやすくなる。
-      doc.search('br').each { |n| n.replace("\n") }
-
-      doc
-    end
-
-    def scrape_calendar(doc)
-      calendar_table = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/table[@id='event']")
-      
       # 今月
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
 
@@ -50,7 +27,7 @@ class KosodateEventsScraper
 
           events << KosodateEvent.new(
             year_month: date.strftime("%Y-%m"),
-            date_and_id: [date.strftime("%d"), i + 1].join('-'),
+            date: date.strftime("%d"),
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required
@@ -58,10 +35,27 @@ class KosodateEventsScraper
         end
       end
 
-      KosodateEvent.bulk_insert(events)
-      # ここでbulk-insertすべきでは？
-      # KosodateEvent.create(event)って変
-      [year_month, events]
+      KosodateEvent.save(year_month, events)
+    end
+
+    private
+
+    def calendar_table
+      return @calendar_table unless @calendar_table.nil?
+
+      @calendar_table = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/table[@id='event']")
+    end
+
+    def doc
+      return @doc unless @doc.nil?
+      charset = 'utf-8'
+      html = URI.open(URL) { |f| f.read }
+      document = Nokogiri::HTML.parse(html, nil, charset)
+
+      # <br>タグを改行（\n）に変えて置くとスクレイピングしやすくなる。
+      document.search('br').each { |n| n.replace("\n") }
+
+      document
     end
   end
 end
