@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require "pry"
 require_relative '../models/kosodate_event.rb'
 
 class KosodateEventsScraper

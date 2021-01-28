@@ -30,9 +30,17 @@ provider:
 # you can overwrite defaults here
   stage: ${opt:stage, self:custom.defaultStage}
   region: ap-northeast-1
+  environment:
+    STAGE: ${self:custom.otherfile.environment.${self:provider.stage}.STAGE}
   
 custom:
   defaultStage: dev
+  rubyLayer:
+    use_docker: true
+  otherfile:
+    environment:
+      dev: ${file(./conf/dev.yml)}
+      prod: ${file(./conf/prod.yml)}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -137,3 +145,6 @@ resources:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+  - serverless-ruby-layer
