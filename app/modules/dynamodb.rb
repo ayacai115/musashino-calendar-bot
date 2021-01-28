@@ -1,5 +1,4 @@
 require 'aws-sdk-dynamodb'
-require 'pry'
 
 class DynamoDB
   class << self
@@ -18,7 +17,7 @@ class DynamoDB
       return @client unless @client.nil?
 
       Aws.config.update(
-      endpoint: 'http://localhost:8000', # ローカル専用
+      # endpoint: 'http://localhost:8000', # ローカル専用
       region: 'ap-northeast-1'
       )
 

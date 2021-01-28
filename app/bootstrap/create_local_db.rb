@@ -1,5 +1,4 @@
 require 'aws-sdk-dynamodb'
-require 'pry'
 
 def run
   Aws.config.update(

@@ -1,4 +1,3 @@
-require 'pry'
 require 'aws-sdk-dynamodb'
 require_relative '../modules/kosodate_events_scraper.rb'
 

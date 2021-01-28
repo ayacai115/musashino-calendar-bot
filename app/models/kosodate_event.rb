@@ -1,7 +1,7 @@
 require_relative '../modules/dynamodb.rb'
 
 class KosodateEvent
-  TABLE_NAME = 'musashino-kosodate-events-local'.freeze
+  TABLE_NAME = "musashino-kosodate-events-#{ENV['STAGE']}".freeze
   
   attr_reader :year_month # 2021-01
   attr_reader :date # 01
