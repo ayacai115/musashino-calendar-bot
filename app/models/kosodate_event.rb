@@ -27,7 +27,8 @@ class KosodateEvent
 
       item = {
         year_month: date.strftime("%Y-%m"),
-        data: hash.to_json
+        data: hash.to_json,
+        created_at: DateTime.now.new_offset('+9').strftime('%Y-%m-%d %H:%M')
       }
 
       DynamoDB.put(TABLE_NAME, item)
