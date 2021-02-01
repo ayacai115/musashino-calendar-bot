@@ -85,9 +85,10 @@ functions:
   # 武蔵野市HPからカレンダー情報を取得
   scraper:
     handler: app/lambda/scraper_function.run
+    events: 
+      - schedule: rate(1 day)
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
 #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
 #      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
