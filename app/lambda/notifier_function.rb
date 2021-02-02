@@ -1,5 +1,6 @@
 require 'json'
 require 'line/bot'
+require_relative '../models/kosodate_event.rb'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -10,6 +11,10 @@ def client
 end
 
 def run(event:, context:)
+  result = KosodateEvent.where(year: '2021', month: '02')
+  result.item['data']
+  shedule = JSON.parse(result.item['data'])
+
   message = {
     type: 'text',
     text: 'hello'
@@ -18,3 +23,5 @@ def run(event:, context:)
 
   { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
 end
+
+run(event: nil, context: nil)
