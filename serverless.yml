@@ -40,7 +40,7 @@ functions:
   notifier:
     handler: app/lambda/notifier_function.run
     events:
-      - schedule: cron(0 0 3 * ? *) # 3日の朝8時に来たらテストOK
+      - schedule: cron(0 0 3 * ? *) # 3日の朝9時に来たらテストOK
 
 resources:
   Resources:
