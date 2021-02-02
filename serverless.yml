@@ -36,6 +36,11 @@ functions:
     handler: app/lambda/scraper_function.run
     events: 
       - schedule: rate(1 day)
+  # 毎月1日に今月のイベント一覧を送る
+  notifier:
+    handler: app/lambda/notifier_function.run
+    events:
+      - schedule: cron(0 8 3 * ? *) # 3日の朝8時に来たらテストOK
 
 resources:
   Resources:
