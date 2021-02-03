@@ -1,4 +1,5 @@
-service: musashino-calendar
+service: musashino-calendar-bot
+app: musashino-calendar-bot
 frameworkVersion: '2'
 
 provider:
