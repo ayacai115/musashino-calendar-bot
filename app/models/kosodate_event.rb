@@ -1,5 +1,4 @@
 require_relative '../modules/dynamodb.rb'
-require 'pry'
 
 class KosodateEvent
   TABLE_NAME = "musashino-kosodate-events-#{ENV['STAGE'] || 'local'}".freeze
@@ -10,27 +9,24 @@ class KosodateEvent
   attr_reader :booking_required
 
   class << self
-    def bulk_save(events) # 1ヶ月分まとめて
-      # ここイケてない
-      # ある日付だけ入れればよいのでは？
-      # たしかmapの性質の問題だっけ…うーむ
-      # date = Date.parse("#{year_month}-1")
-      # all_dates = (date..date.next_month).map { |d| d.strftime("%d") }
-      
-      # hash = {}
-      # all_dates.each { |date| hash[date] = [] }
+    def bulk_save(events) # 1ヶ月単位
+      events_by_date = events.group_by { |event| event.date.strftime("%Y-%m-%d") }
 
-      # events.each do |event|
-      #   hash[event.date] << {
-      #     name: event.name,
-      #     url: event.url,
-      #     booking_required: event.booking_required
-      #   }
-      # end
+      # KosodateEventオブジェクトをハッシュに変換
+      data = events_by_date.map do |date, events_group|
+        event_group = events_group.map do|event|
+          {
+            name: event.name,
+            url: event.url,
+            booking_required: event.booking_required
+          }
+        end
+        [date, event_group]
+      end.to_h
 
       item = {
         year_month: events.first.date.strftime("%Y-%m"),
-        data: events.group_by { |event| event.date.strftime("%Y-%m-%d") }.to_json,
+        data: data.to_json,
         created_at: DateTime.now.new_offset('+9').strftime('%Y-%m-%d %H:%M')
       }
 
