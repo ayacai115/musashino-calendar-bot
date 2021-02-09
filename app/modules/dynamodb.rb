@@ -16,12 +16,20 @@ class DynamoDB
     def client
       return @client unless @client.nil?
 
-      Aws.config.update(
-      # endpoint: 'http://localhost:8000', # ローカル専用
-      region: 'ap-northeast-1'
-      )
-
+      Aws.config.update(config_params)
       @client = Aws::DynamoDB::Client.new
+    end
+
+    def config_params
+      if local?
+        { region: 'ap-northeast-1', endpoint: 'http://localhost:8000' }
+      else
+        { region: 'ap-northeast-1' }
+      end
+    end
+    
+    def local?
+      ENV["STAGE"].nil?
     end
   end
 end
