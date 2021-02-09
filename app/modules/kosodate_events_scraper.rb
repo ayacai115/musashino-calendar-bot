@@ -9,28 +9,27 @@ class KosodateEventsScraper
     def run
       # 今月
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
-
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
 
-      events = []
-      rows.each do |row|
+      events = rows.map do |row|
         date_element = row.xpath("th").text.scan(/\d+/)[0]
         date = Date.parse("#{year_month}-#{date_element}") 
         
-        list_items = row.xpath("td/ul/li")
+        event_list = row.xpath("td/ul/li")
+        event_list.map { |event| [date, event]}
+      end
 
-        list_items.each_with_index do |item, i|
-          name = item.xpath("a").text
-          path = item.xpath("a").attribute("href").value
-          booking_required = item.text.include?("事前申込必要")
+      # before [[[<#Date>, <#Element>], [<#Date>, <#Element>]], [[<#Date>, <#Element>]]]
+      # after  [[<#Date>, <#Element>], [<#Date>, <#Element>], [<#Date>, <#Element>]]
+      events.flatten!(1) 
 
-          events << KosodateEvent.new(
-            date: date,
-            name: name,
-            url: "http://www.city.musashino.lg.jp" + path,
-            booking_required: booking_required
-          )
-        end
+      events.map! do |event|
+        KosodateEvent.new(
+          date: event[0],
+          name: event[1].xpath("a").text,
+          url: "http://www.city.musashino.lg.jp" + event[1].xpath("a").attribute("href").value,
+          booking_required: event[1].text.include?("事前申込必要")
+        )
       end
 
       KosodateEvent.bulk_save(events)
