@@ -25,8 +25,7 @@ class KosodateEventsScraper
           booking_required = item.text.include?("事前申込必要")
 
           events << KosodateEvent.new(
-            year_month: date.strftime("%Y-%m"),
-            date: date.strftime("%d"),
+            date: date,
             name: name,
             url: "http://www.city.musashino.lg.jp" + path,
             booking_required: booking_required
@@ -34,7 +33,7 @@ class KosodateEventsScraper
         end
       end
 
-      KosodateEvent.save(year_month, events)
+      KosodateEvent.bulk_save(events)
     end
 
     private
