@@ -1,1 +1,4 @@
-STAGE: prod
+stage: prod
+line_channel_secret: ${ssm:/musashino_calenar_bot_prod_line_channel_secret~true}
+line_channel_token: ${ssm:/musashino_calenar_bot_prod_line_channel_token~true}
+line_channel_id: ${ssm:/musashino_calenar_bot_prod_line_channel_id~true}
