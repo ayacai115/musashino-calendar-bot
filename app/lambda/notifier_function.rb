@@ -20,7 +20,7 @@ def run(event:, context:)
   schedule = JSON.parse(result.item['data'])
 
   schedule = schedule.map do |date, events|
-    events.map! { |event| "\n#{event['name']} 【事前申込必要】\n #{event['url']}" }
+    events.map! { |event| "\n#{event['name']} 【事前申込必要】#{event['url']}\n" }
 
     date = Date.parse(date)
     day_of_the_week = DAYS_OF_THE_WEEK[date.strftime('%w').to_i]
@@ -29,13 +29,18 @@ def run(event:, context:)
     [display_date, events].flatten!.join('')
   end
 
-  schedule = schedule.join('\n---------------------------\n')
-
-  message = {
+  messages = [{
     type: 'text',
-    text: schedule
-  }
-  client.broadcast(message)
+    text: schedule[0..9].join("\n\n---------------------------\n\n")
+  },{
+    type: 'text',
+    text: schedule[10..19].join("\n\n---------------------------\n\n")
+  },{
+    type: 'text',
+    text: schedule[20..30].join("\n\n---------------------------\n\n")
+  }]
+
+  client.broadcast(messages)
 
   { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
 end
