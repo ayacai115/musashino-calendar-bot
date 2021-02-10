@@ -31,13 +31,13 @@ def run(event:, context:)
 
   messages = [{
     type: 'text',
-    text: schedule[0..9].join("\n\n---------------------------\n\n")
+    text: schedule[0..9].join("\n\n--------------------------------------\n\n")
   },{
     type: 'text',
-    text: schedule[10..19].join("\n\n---------------------------\n\n")
+    text: schedule[10..19].join("\n\n--------------------------------------\n\n")
   },{
     type: 'text',
-    text: schedule[20..30].join("\n\n---------------------------\n\n")
+    text: schedule[20..30].join("\n\n--------------------------------------\n\n")
   }]
 
   client.broadcast(messages)
