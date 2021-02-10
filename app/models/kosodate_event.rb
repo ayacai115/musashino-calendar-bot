@@ -3,31 +3,30 @@ require_relative '../modules/dynamodb.rb'
 class KosodateEvent
   TABLE_NAME = "musashino-kosodate-events-#{ENV['STAGE'] || 'local'}".freeze
   
-  attr_reader :year_month # 2021-01
-  attr_reader :date # 01
+  attr_reader :date
   attr_reader :name
   attr_reader :url 
   attr_reader :booking_required
 
   class << self
-    def save(year_month, events) # 1ヶ月分まとめて
-      date = Date.parse("#{year_month}-1")
-      all_dates = (date..date.next_month).map { |d| d.strftime("%d") }
-      
-      hash = {}
-      all_dates.each { |date| hash[date] = [] }
+    def bulk_save(events) # 1ヶ月単位
+      events_by_date = events.group_by { |event| event.date.strftime("%Y-%m-%d") }
 
-      events.each do |event|
-        hash[event.date] << {
-          name: event.name,
-          url: event.url,
-          booking_required: event.booking_required
-        }
-      end
+      # KosodateEventオブジェクトをハッシュに変換
+      data = events_by_date.map do |date, events_group|
+        event_group = events_group.map do|event|
+          {
+            name: event.name,
+            url: event.url,
+            booking_required: event.booking_required
+          }
+        end
+        [date, event_group]
+      end.to_h
 
       item = {
-        year_month: date.strftime("%Y-%m"),
-        data: hash.to_json,
+        year_month: events.first.date.strftime("%Y-%m"),
+        data: data.to_json,
         created_at: DateTime.now.new_offset('+9').strftime('%Y-%m-%d %H:%M')
       }
 
@@ -44,8 +43,7 @@ class KosodateEvent
     end
   end
 
-  def initialize(year_month:, date:, name:, url:, booking_required:)
-    @year_month = year_month
+  def initialize(date:, name:, url:, booking_required:)
     @date = date
     @name = name
     @url = url
