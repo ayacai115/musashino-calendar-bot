@@ -1,5 +1,6 @@
 class BroadcastFormatter
   DAYS_OF_THE_WEEK = %w(日 月 火 水 木 金 土)
+  DEVIDING_LINE = "\n\n--------------------------------------\n\n"
 
   class << self
     def format(schedule)
@@ -15,13 +16,13 @@ class BroadcastFormatter
 
       [{
         type: 'text',
-        text: schedule[0..9].join("\n\n--------------------------------------\n\n")
+        text: schedule[0..9].join(DEVIDING_LINE)
       },{
         type: 'text',
-        text: schedule[10..19].join("\n\n--------------------------------------\n\n")
+        text: schedule[10..19].join(DEVIDING_LINE)
       },{
         type: 'text',
-        text: schedule[20..30].join("\n\n--------------------------------------\n\n")
+        text: schedule[20..30].join(DEVIDING_LINE)
       }]
     end 
   end
