@@ -1,5 +1,5 @@
 require 'aws-sdk-dynamodb'
-require_relative '../modules/current_month_event_scraper.rb'
+require_relative '../modules/scrapers/current_month_event_scraper.rb'
 
 def run(event:, context:)
   CurrentMonthEventScraper.run

@@ -1,6 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
-require_relative '../models/kosodate_event.rb'
+require_relative '../../models/kosodate_event.rb'
 
 class CurrentMonthEventScraper
   URL = 'http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7'.freeze
