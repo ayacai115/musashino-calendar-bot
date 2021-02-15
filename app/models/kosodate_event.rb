@@ -5,6 +5,7 @@ class KosodateEvent
   
   attr_reader :date
   attr_reader :name
+  attr_reader :place 
   attr_reader :url 
   attr_reader :booking_required
 
@@ -39,13 +40,27 @@ class KosodateEvent
         year_month: [year, month].join('-')
       }
 
-      DynamoDB.get(TABLE_NAME, key)
+      result = DynamoDB.get(TABLE_NAME, key)
+      events_by_date = JSON.parse(result.item['data'])
+
+      events_by_date.map do |date, events|
+        events.map do |event|
+          self.new(
+            date: date,
+            name: event["name"],
+            place: event["place"],
+            url: event["url"],
+            booking_required: event["booking_required"]
+          )
+        end
+      end.flatten!
     end
   end
 
-  def initialize(date:, name:, url:, booking_required:)
+  def initialize(date:, name:, place: nil, url:, booking_required:)
     @date = date
     @name = name
+    @place = place
     @url = url
     @booking_required = booking_required
   end
