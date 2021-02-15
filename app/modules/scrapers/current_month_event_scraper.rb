@@ -11,6 +11,7 @@ class CurrentMonthEventScraper
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
 
+      # 1列に複数日付が入っている場合があるので、まずは [日付, イベント名]の組を作る
       events = rows.map do |row|
         date_element = row.xpath("th").text.scan(/\d+/)[0]
         date = Date.parse("#{year_month}-#{date_element}") 
@@ -49,7 +50,7 @@ class CurrentMonthEventScraper
       html = URI.open(URL) { |f| f.read }
       document = Nokogiri::HTML.parse(html, nil, charset)
 
-      # <br>タグを改行（\n）に変えて置くとスクレイピングしやすくなる。
+      # <br>タグを改行（\n）に変えておくとスクレイピングしやすくなる。
       document.search('br').each { |n| n.replace("\n") }
 
       document

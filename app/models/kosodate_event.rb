@@ -5,6 +5,7 @@ class KosodateEvent
   
   attr_reader :date
   attr_reader :name
+  attr_reader :place 
   attr_reader :url 
   attr_reader :booking_required
 
@@ -43,9 +44,10 @@ class KosodateEvent
     end
   end
 
-  def initialize(date:, name:, url:, booking_required:)
+  def initialize(date:, name:, place: nil, url:, booking_required:)
     @date = date
     @name = name
+    @place = place
     @url = url
     @booking_required = booking_required
   end
