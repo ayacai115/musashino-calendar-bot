@@ -1,7 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
 require_relative '../../models/kosodate_event.rb'
-require 'pry'
 
 class OyakoHirobaScraper
   URL = 'http://www.city.musashino.lg.jp/shiminsanka/kodomokatei/kodomoseisaku/1012272.html'.freeze
@@ -10,7 +9,6 @@ class OyakoHirobaScraper
     def run
       events = com_center_events.concat(collabono_events)
 
-      # KosodateEventインスタンスを一括で生成する
       events.map! do |event|
         KosodateEvent.new(
           date: event[0],
@@ -20,6 +18,8 @@ class OyakoHirobaScraper
           booking_required: true
         )
       end
+
+      KosodateEvent.bulk_save(events)
     end
 
     private 
