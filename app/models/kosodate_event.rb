@@ -43,7 +43,7 @@ class KosodateEvent
       result = DynamoDB.get(TABLE_NAME, key)
       events_by_date = JSON.parse(result.item['data'])
 
-      events_by_date.map! do |date, events|
+      events_by_date.map do |date, events|
         events.map do |event|
           self.new(
             date: date,
@@ -53,7 +53,7 @@ class KosodateEvent
             booking_required: event["booking_required"]
           )
         end
-      end
+      end.flatten!
     end
   end
 
