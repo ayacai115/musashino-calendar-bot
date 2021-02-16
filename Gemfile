@@ -8,6 +8,5 @@ gem 'nokogiri'
 gem 'pry-byebug'
 
 group :test do 
-  gem 'minitest'
-  gem 'minitest-reporters'
+  gem 'rspec'
 end
