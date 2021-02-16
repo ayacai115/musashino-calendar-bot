@@ -8,5 +8,6 @@ gem 'nokogiri'
 gem 'pry-byebug'
 
 group :test do 
+  gem 'rake'
   gem 'rspec'
 end
