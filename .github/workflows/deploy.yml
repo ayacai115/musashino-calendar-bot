@@ -3,7 +3,8 @@ name: Deploy develop branch
 on:
   push:
     branches:
-      - develop 
+      # - develop # あとで戻す
+      - use_github_actions_for_deployment # テスト用
 
 jobs:
   deploy:
