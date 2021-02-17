@@ -10,9 +10,9 @@ provider:
   stage: ${opt:stage, self:custom.defaultStage}
   environment:
     STAGE: ${self:custom.otherfile.environment.${self:provider.stage}.stage}
-    LINE_CHANNEL_SECRET: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_secret}
-    LINE_CHANNEL_TOKEN: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_token}
-    LINE_CHANNEL_ID: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_id}
+    # LINE_CHANNEL_SECRET: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_secret}
+    # LINE_CHANNEL_TOKEN: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_token}
+    # LINE_CHANNEL_ID: ${self:custom.otherfile.environment.${self:provider.stage}.line_channel_id}
 
   apiGateway:
     shouldStartNameWithService: true
