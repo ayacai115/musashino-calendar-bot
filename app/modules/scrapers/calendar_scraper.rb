@@ -39,13 +39,13 @@ class CalendarScraper
     private
 
     def calendar_table
-      return @calendar_table unless @calendar_table.nil?
+      return @calendar_table if defined?(@calendar_table)
 
       @calendar_table = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/table[@id='event']")
     end
 
     def doc
-      return @doc unless @doc.nil?
+      return @doc if defined?(@doc)
       charset = 'utf-8'
       html = URI.open(URL) { |f| f.read }
       document = Nokogiri::HTML.parse(html, nil, charset)
