@@ -9,7 +9,7 @@ RSpec.describe CalendarScraper do
     end
 
     example "来月の子育てイベント情報を取得する" do
-      # result = CalendarScraper.run
+      # result = CalendarScraper.run(next_month: true)
     end
   end
 end
