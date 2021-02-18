@@ -14,7 +14,7 @@ class DynamoDB
     private
 
     def client
-      return @client unless @client.nil?
+      return @client if defined?(@client)
 
       Aws.config.update(config_params)
       @client = Aws::DynamoDB::Client.new

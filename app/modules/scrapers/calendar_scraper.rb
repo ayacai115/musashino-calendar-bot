@@ -2,12 +2,14 @@ require 'nokogiri'
 require 'open-uri'
 require_relative '../../models/kosodate_event.rb'
 
-class CurrentMonthEventScraper
-  URL = 'http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7'.freeze
+class CalendarScraper
+  CURRENT_MONTH_URL = "http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7".freeze
+  CONTENT_XPATH = "//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']".freeze
 
   class << self
-    def run
-      # 今月
+    def run(next_month: false)
+      calendar_table = next_month ? next_month_calendar : current_month_calendar
+
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
 
@@ -38,16 +40,22 @@ class CurrentMonthEventScraper
 
     private
 
-    def calendar_table
-      return @calendar_table unless @calendar_table.nil?
-
-      @calendar_table = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/table[@id='event']")
+    def next_month_calendar
+      doc(next_month_url).xpath("#{CONTENT_XPATH}/table[@id='event']")
     end
 
-    def doc
-      return @doc unless @doc.nil?
+    # 「翌月を見る」のリンク
+    def next_month_url
+      doc(CURRENT_MONTH_URL).xpath("#{CONTENT_XPATH}/ul[@class='month'][1]/li[@class='next']/a").attribute("href").value
+    end
+
+    def current_month_calendar
+      doc(CURRENT_MONTH_URL).xpath("#{CONTENT_XPATH}/table[@id='event']")
+    end
+
+    def doc(url)
       charset = 'utf-8'
-      html = URI.open(URL) { |f| f.read }
+      html = URI.open(url) { |f| f.read }
       document = Nokogiri::HTML.parse(html, nil, charset)
 
       # <br>タグを改行（\n）に変えておくとスクレイピングしやすくなる。
