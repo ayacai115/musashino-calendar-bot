@@ -7,6 +7,10 @@ RSpec.describe CalendarScraper do
       # result = CalendarScraper.run
       # expect(result).to be_a_kind_of(Seahorse::Client::Response)
     end
+
+    example "来月の子育てイベント情報を取得する" do
+      # result = CalendarScraper.run
+    end
   end
 end
 

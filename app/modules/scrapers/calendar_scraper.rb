@@ -3,10 +3,14 @@ require 'open-uri'
 require_relative '../../models/kosodate_event.rb'
 
 class CalendarScraper
-  URL = 'http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7'.freeze
+  CURRENT_MONTH_URL = 'http://www.city.musashino.lg.jp/cgi-evt/event/event.cgi?cate=7'.freeze
 
   class << self
-    def run
+    def run(next_month: false)
+      if next_month
+        # docのurlが変わる
+      end
+
       # 今月
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
@@ -44,8 +48,7 @@ class CalendarScraper
       @calendar_table = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/table[@id='event']")
     end
 
-    def doc
-      return @doc if defined?(@doc)
+    def doc(next_month: false)
       charset = 'utf-8'
       html = URI.open(URL) { |f| f.read }
       document = Nokogiri::HTML.parse(html, nil, charset)
@@ -54,6 +57,12 @@ class CalendarScraper
       document.search('br').each { |n| n.replace("\n") }
 
       document
+    end
+
+    def url(next_month: false)
+      return CURRENT_MONTH_URL unless next_month
+
+      # 「翌月を見る」のURLを返す
     end
   end
 end
