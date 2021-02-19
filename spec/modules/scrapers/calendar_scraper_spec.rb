@@ -4,7 +4,7 @@ RSpec.describe CalendarScraper do
   describe ".run" do
     # DynamoDBをCI環境で使えるようにするまではコメントアウト
     example "今月の子育てイベント情報を取得する" do
-      # result = CalendarScraper.run
+      result = CalendarScraper.run
       # expect(result).to be_a_kind_of(Seahorse::Client::Response)
     end
 

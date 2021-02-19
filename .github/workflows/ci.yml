@@ -1,4 +1,4 @@
-name: Ruby
+name: CI
 
 on:
   push:
@@ -8,12 +8,13 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby-version: ['2.7']
-
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.CI_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_AWS_SECRET_ACCESS_KEY }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -21,5 +22,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Set up DynamoDB
+      run: |
+        docker-compose up -d  
+        bundle exec ruby app/bootstrap/create_local_db.rb 
+        bundle exec ruby app/lambda/scraper_function.rb
     - name: Test with Rspec
       run: bundle exec rspec
+
