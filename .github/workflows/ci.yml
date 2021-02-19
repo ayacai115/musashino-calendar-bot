@@ -12,7 +12,6 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['2.7']
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -25,8 +24,9 @@ jobs:
         docker-compose up -d  
         bundle exec ruby app/bootstrap/create_local_db.rb 
         bundle exec ruby app/lambda/scraper_function.rb
+    - name: Test with Rspec
+      run: bundle exec rspec
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - name: Test with Rspec
-      run: bundle exec rspec
+
