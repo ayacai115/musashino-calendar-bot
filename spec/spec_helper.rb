@@ -1,4 +1,5 @@
 require 'pry-byebug'
+require_relative '../helpers/dynamodb_reset.rb'
 
 RSpec.configure do |config|
   config.before(:each) do
