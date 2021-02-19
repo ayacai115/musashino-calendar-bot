@@ -5,7 +5,7 @@ module DynamodbReset
 
   class << self
     def table
-      if client.describe_table(table_name: TABLE_NAME)
+      if client.list_tables.table_names.include?(TABLE_NAME)
         client.delete_table(table_name: TABLE_NAME)
       end
       
