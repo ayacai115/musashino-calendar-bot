@@ -22,8 +22,8 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Set up DynamoDB
       run: |
-        docker-compose up -d bundle exec 
-        ruby app/bootstrap/create_local_db.rb 
+        docker-compose up -d  
+        bundle exec ruby app/bootstrap/create_local_db.rb 
         bundle exec ruby app/lambda/scraper_function.rb
     - name: Test with Rspec
       run: bundle exec rspec
