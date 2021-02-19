@@ -2,7 +2,7 @@ require 'pry-byebug'
 
 RSpec.configure do |config|
   config.before(:each) do
-    # TODO: テストデータをリセット
+    DynamodbReset.table
   end
 
   # 以下デフォルト設定のまま
