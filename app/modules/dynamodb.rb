@@ -3,6 +3,7 @@ require 'aws-sdk-dynamodb'
 class DynamoDB
   class << self
     def put(table_name, item)
+      puts config_params.inspect
       client.put_item(table_name: table_name, item: item)
     end
 
