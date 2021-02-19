@@ -9,7 +9,6 @@ class DynamoDB
     def get(table_name, key)
       client.get_item(table_name: table_name, key: key)
     end
-    
 
     private
 
