@@ -32,7 +32,7 @@ class CalendarScraper
           name: event[1].xpath("a").text,
           url: "http://www.city.musashino.lg.jp" + event[1].xpath("a").attribute("href").value,
           booking_required: event[1].text.include?("事前申込必要")
-        )
+      )
       end
 
       KosodateEvent.bulk_save(events)
