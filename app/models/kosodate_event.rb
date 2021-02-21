@@ -3,11 +3,7 @@ require_relative '../modules/dynamodb.rb'
 class KosodateEvent
   TABLE_NAME = "musashino-kosodate-events-#{ENV['STAGE'] || 'local'}".freeze
   
-  attr_reader :date
-  attr_reader :name
-  attr_reader :place 
-  attr_reader :url 
-  attr_reader :booking_required
+  attr_accessor :date, :name, :place, :url, :booking_required
 
   class << self
     def bulk_save(events) # 1ヶ月単位
@@ -55,13 +51,5 @@ class KosodateEvent
         end
       end.flatten!
     end
-  end
-
-  def initialize(date:, name:, place: nil, url:, booking_required:)
-    @date = date
-    @name = name
-    @place = place
-    @url = url
-    @booking_required = booking_required
   end
 end
