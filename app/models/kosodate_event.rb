@@ -52,4 +52,12 @@ class KosodateEvent
       end.flatten!
     end
   end
+
+  def initialize(date:, name:, place: nil, url:, booking_required:)
+    @date = date
+    @name = name
+    @place = place
+    @url = url
+    @booking_required = booking_required
+  end
 end

@@ -7,5 +7,15 @@ FactoryBot.define do
     place { "吉祥寺東" }
     url { "example.com" }
     booking_required { true }
+
+    initialize_with do
+      new(
+        date: date,
+        name: name,
+        place: place,
+        url: url,
+        booking_required: booking_required
+      )
+    end
   end
 end
