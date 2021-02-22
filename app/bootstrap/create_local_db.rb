@@ -1,12 +1,16 @@
 require 'aws-sdk-dynamodb'
 
+TABLE_NAME = 'musashino-kosodate-events-local'.freeze
+
 def run
   Aws.config.update(
     endpoint: 'http://localhost:8000',
     region: 'ap-northeast-1'
   )
 
-  create_table_result = create_table(dynamodb_client, table_definition)
+  delete_table if client.list_tables.table_names.include?(TABLE_NAME)
+
+  create_table_result = create_table
 
   if create_table_result == 'Error'
     puts 'Table not created.'
@@ -17,32 +21,45 @@ end
 
 private
 
-def create_table(dynamodb_client, table_definition)
-  response = dynamodb_client.create_table(table_definition)
+def delete_table
+  client.delete_table(table_name: TABLE_NAME)
+
+end
+
+def create_table
+  response = client.create_table(table_definition)
   response.table_description.table_status
 rescue StandardError => e
   puts "Error creating table: #{e.message}"
   'Error'
 end
 
-def dynamodb_client
+def client
   Aws::DynamoDB::Client.new
 end
 
 def table_definition
   {
-    table_name: 'musashino-kosodate-events-local',
+    table_name: TABLE_NAME,
     key_schema: [
       {
-        attribute_name: 'year_month',
+        attribute_name: 'date',
         key_type: 'HASH'  # Partition key.
       },
+      {
+        attribute_name: 'name',
+        key_type: 'RANGE'  # Partition key.
+      }
     ],
     attribute_definitions: [
       {
-        attribute_name: 'year_month',
+        attribute_name: 'date',
         attribute_type: 'S'
       },
+      {
+        attribute_name: 'name',
+        attribute_type: 'S'
+      }
     ],
     provisioned_throughput: {
       read_capacity_units: 1,
