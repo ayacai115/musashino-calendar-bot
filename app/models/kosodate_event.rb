@@ -13,7 +13,7 @@ class KosodateEvent
     @booking_required = booking_required
   end
 
-  def save
+  def save!
     item = {
       date: date.strftime('%Y-%m-%d'),
       name: name,

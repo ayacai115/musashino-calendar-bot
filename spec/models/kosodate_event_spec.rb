@@ -19,6 +19,7 @@ RSpec.describe KosodateEvent do
 
   describe ".where" do
     example "年月を指定して取得する" do
+      events = create_list(:kosodate_event, 5)
     end
 
     example "名前を指定して取得する" do
