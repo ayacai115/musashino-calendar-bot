@@ -16,4 +16,12 @@ RSpec.describe KosodateEvent do
       event.save
     end
   end
+
+  describe ".where" do
+    example "年月を指定して取得する" do
+    end
+
+    example "名前を指定して取得する" do
+    end
+  end
 end

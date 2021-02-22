@@ -25,6 +25,12 @@ class KosodateEvent
     DynamoDB.put(TABLE_NAME, item)
   end
 
+  def where(year:, month:, date: nil, name: nil)
+    # 検索条件は
+    # 年、月、日
+    # イベント名
+  end
+
 
   # class << self
   #   def bulk_save(events) # 1ヶ月単位
