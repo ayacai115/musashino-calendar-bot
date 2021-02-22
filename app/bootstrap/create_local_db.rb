@@ -23,7 +23,6 @@ private
 
 def delete_table
   client.delete_table(table_name: TABLE_NAME)
-
 end
 
 def create_table
