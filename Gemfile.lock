@@ -28,6 +28,8 @@ GEM
     diff-lcs (1.4.4)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
+    faker (2.16.0)
+      i18n (>= 1.6, < 2)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
@@ -69,6 +71,7 @@ DEPENDENCIES
   aws-sdk-dynamodb
   aws-sdk-lambda
   factory_bot
+  faker
   line-bot-api
   nokogiri
   pry-byebug
