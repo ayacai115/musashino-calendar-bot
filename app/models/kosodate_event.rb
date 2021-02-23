@@ -25,12 +25,23 @@ class KosodateEvent
     DynamoDB.put(TABLE_NAME, item)
   end
 
-  def where(year:, month:, date: nil, name: nil)
-    # 検索条件は
-    # 年、月、日
-    # イベント名
-  end
+  class << self
+    def where(year:, month:, date: nil, name: nil)
+      result = DynamoDB.scan(TABLE_NAME)
+      items = result.items.filter { |item| item["date"].start_with?("#{year}-#{month}") }
 
+      filter_by_date(items, date) if date
+      filter_by_name(items, name) if name
+
+      items
+    end
+
+    def filter_by_date(date)
+    end
+
+    def filter_by_name(name)
+    end 
+  end
 
   # class << self
   #   def bulk_save(events) # 1ヶ月単位
