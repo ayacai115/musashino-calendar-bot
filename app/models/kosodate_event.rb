@@ -62,11 +62,11 @@ class KosodateEvent
     end
 
     def filter_by_date(items, dates)
-      items.filter { |item| item.date.day.in? [dates] }
+      items.filter { |item| dates.include?(item.date.day) }
     end
 
     def filter_by_name(items, name)
-      items
+      items.filter { |item| name.include?(item.name) }
     end 
   end
 

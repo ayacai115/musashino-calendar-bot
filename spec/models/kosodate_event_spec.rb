@@ -34,7 +34,20 @@ RSpec.describe KosodateEvent do
       expect(events.count).to be(1)
     end
 
-    example "名前を指定して取得する" do
+    example "名前を指定して取得する（部分一致）" do
+      date = Faker::Date.between(from: '2021-01-01', to: '2021-01-31')
+      4.times { create(:kosodate_event, name: 'コミセン親子ひろば', date: date) }
+      create(:kosodate_event, name: 'ふたご・みつごのつどい', date: date)
+
+      events = KosodateEvent.where(year: 2021, month: 1, name: 'ふたご')
+    end
+
+    example "名前を指定して取得する（完全一致）" do
+      date = Faker::Date.between(from: '2021-01-01', to: '2021-01-31')
+      4.times { create(:kosodate_event, name: 'コミセン親子ひろば', date: date) }
+      create(:kosodate_event, name: 'ふたご・みつごのつどい', date: date)
+
+      events = KosodateEvent.where(year: 2021, month: 1, name: 'ふたご・みつごのつどい')
     end
   end
 
@@ -50,7 +63,7 @@ RSpec.describe KosodateEvent do
       expect(event.name).to be_an_instance_of(String)
       expect(event.place).to be_an_instance_of(String)
       expect(event.url).to be_an_instance_of(String)
-      expect(event.booking_required).to be(true || false)
+      expect([true, false]).to include(event.booking_required)
     end
   end
 end
