@@ -1,15 +1,6 @@
 require_relative '../../app/models/kosodate_event.rb'
 
 RSpec.describe KosodateEvent do
-  describe "#initialize" do
-    example "インスタンスを作成" do
-      events = build(:kosodate_event)
-    end
-
-    example "場所は無しでも作成できる" do
-    end
-  end
-
   describe "#save!" do
     example "保存ができる" do
       event = build(:kosodate_event)
@@ -23,7 +14,7 @@ RSpec.describe KosodateEvent do
       create(:kosodate_event, date: Faker::Date.between(from: '2021-02-01', to: '2021-02-28'))
 
       events = KosodateEvent.where(year: 2021, month: 2)
-      expect(events.count).to be(1)
+      expect(events.count).to eq(1)
     end
 
     example "日付を指定して取得する" do
@@ -40,6 +31,7 @@ RSpec.describe KosodateEvent do
       create(:kosodate_event, name: 'ふたご・みつごのつどい', date: date)
 
       events = KosodateEvent.where(year: 2021, month: 1, name: 'ふたご')
+      expect(events.count).to eq(1)
     end
 
     example "名前を指定して取得する（完全一致）" do
@@ -48,6 +40,7 @@ RSpec.describe KosodateEvent do
       create(:kosodate_event, name: 'ふたご・みつごのつどい', date: date)
 
       events = KosodateEvent.where(year: 2021, month: 1, name: 'ふたご・みつごのつどい')
+      expect(events.count).to eq(1)
     end
   end
 
@@ -72,7 +65,7 @@ RSpec.describe KosodateEvent do
       events = build_list(:kosodate_event, 10)
       KosodateEvent.bulk_insert(events)
 
-      expect(KosodateEvent.all.count).to be(10)
+      expect(KosodateEvent.all.count).to eq(10)
     end
   end
 end
