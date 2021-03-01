@@ -59,7 +59,7 @@ class KosodateEvent
     end
 
     def filter_by_name(items, name)
-      items.filter { |item| name.include?(item.name) }
+      items.filter { |item| item.name.include?(name) }
     end
     
     # KosodateEventインスタンスに変換する
