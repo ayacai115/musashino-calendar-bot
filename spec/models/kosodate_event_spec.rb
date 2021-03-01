@@ -10,10 +10,10 @@ RSpec.describe KosodateEvent do
     end
   end
 
-  describe "#save" do
+  describe "#save!" do
     example "保存ができる" do
       event = build(:kosodate_event)
-      event.save
+      event.save!
     end
   end
 
