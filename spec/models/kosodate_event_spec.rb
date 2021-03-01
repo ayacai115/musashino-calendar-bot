@@ -22,7 +22,7 @@ RSpec.describe KosodateEvent do
       create(:kosodate_event, date: Date.new(2021, 1, 20))
 
       events = KosodateEvent.where(year: 2021, month: 1, dates: [20, 21])
-      expect(events.count).to be(1)
+      expect(events.count).to eq(1)
     end
 
     example "名前を指定して取得する（部分一致）" do
@@ -49,7 +49,7 @@ RSpec.describe KosodateEvent do
       create_list(:kosodate_event, 10)
       
       events = KosodateEvent.all
-      expect(events.count).to be(10)
+      expect(events.count).to eq(10)
 
       event = events.first
       expect(event.date).to be_an_instance_of(Date)
