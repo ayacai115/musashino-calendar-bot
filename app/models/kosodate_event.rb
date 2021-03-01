@@ -26,11 +26,12 @@ class KosodateEvent
   end
 
   class << self
-    def where(year:, month:, date: nil, name: nil)
-      result = DynamoDB.scan(TABLE_NAME)
-      items = result.items.filter { |item| item["date"].start_with?("#{year}-#{month}") }
-
-      items = filter_by_date(items, date) if date
+    def where(year:, month:, dates: nil, name: nil)
+      items = DynamoDB.scan(TABLE_NAME).items
+      return if items.nil?
+      
+      items = filter_by_year_month(items, year, month)
+      items = filter_by_date(items, dates) if dates
       items = filter_by_name(items, name) if name
 
       parse(items)
@@ -54,10 +55,16 @@ class KosodateEvent
       end
     end
 
+    def filter_by_year_month(items, year, month)
+      items.filter { |item| item["date"].start_with?("#{year}-#{month}") }
+    end
+
     def filter_by_date(items, date)
+      items
     end
 
     def filter_by_name(items, name)
+      items
     end 
   end
 
