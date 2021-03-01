@@ -14,6 +14,16 @@ class DynamoDB
       client.scan(table_name: table_name)
     end
 
+    def batch_write_item(table_name, items)
+      items.each_slice(25) do |sliced_items|
+        requests = sliced_items.map { |item| { put_request: { item: item } } }
+
+        client.batch_write_item({
+          request_items: { table_name => requests }
+        })
+      end
+    end
+
     private
 
     def client
