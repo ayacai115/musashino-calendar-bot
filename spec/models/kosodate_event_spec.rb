@@ -22,7 +22,7 @@ RSpec.describe KosodateEvent do
       4.times { create(:kosodate_event, date: Faker::Date.between(from: '2021-01-01', to: '2021-01-31')) }
       create(:kosodate_event, date: Faker::Date.between(from: '2021-02-01', to: '2021-02-28'))
 
-      events = KosodateEvent.where(year: '2021', month: '02')
+      events = KosodateEvent.where(year: 2021, month: 2)
       expect(events.count).to be(1)
     end
 
@@ -30,7 +30,7 @@ RSpec.describe KosodateEvent do
       4.times { create(:kosodate_event, date: Faker::Date.between(from: '2021-01-01', to: '2021-01-15')) }
       create(:kosodate_event, date: Date.new(2021, 1, 20))
 
-      events = KosodateEvent.where(year: '2021', month: '01', dates: [20, 21])
+      events = KosodateEvent.where(year: 2021, month: 1, dates: [20, 21])
       expect(events.count).to be(1)
     end
 
