@@ -36,10 +36,28 @@ class KosodateEvent
       items
     end
 
-    def filter_by_date(date)
+    def all
+      items = DynamoDB.scan(TABLE_NAME).items
+      parse(items)
     end
 
-    def filter_by_name(name)
+    # KosodateEventインスタンスに変換する
+    def parse(items)
+      items.map do |item|
+        new(date: item["date"],
+            name: item["name"],
+            place: item["place"],
+            url: item["url"],
+            booking_required: item["booking_required"])
+      end
+    end
+
+    private
+
+    def filter_by_date(items, date)
+    end
+
+    def filter_by_name(items, name)
     end 
   end
 

@@ -26,7 +26,24 @@ RSpec.describe KosodateEvent do
       expect(events.count).to be(1)
     end
 
+    example "日付を指定して取得する" do
+      4.times { create(:kosodate_event, date: Faker::Date.between(from: '2021-01-01', to: '2021-01-15')) }
+      create(:kosodate_event, date: Date.new(2021, 1, 20))
+
+      events = KosodateEvent.where(year: '2021', month: '01', date: [20])
+      expect(events.count).to be(1)
+    end
+
     example "名前を指定して取得する" do
+    end
+  end
+
+  describe ".all" do
+    example "全件取得する" do
+      create_list(:kosodate_event, 10)
+      events = KosodateEvent.all
+
+      expect(events.count).to be(10)
     end
   end
 end
