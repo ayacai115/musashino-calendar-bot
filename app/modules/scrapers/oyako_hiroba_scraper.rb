@@ -44,7 +44,7 @@ class OyakoHirobaScraper
     end
 
     def com_center_calendar
-      return @com_center_calendar unless @com_center_calendar.nil?
+      return @com_center_calendar if defined?(@com_center_calendar)
 
       @com_center_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[1]/tbody")
     end
@@ -72,13 +72,13 @@ class OyakoHirobaScraper
     end
 
     def collabono_calendar
-      return @collabono_calendar unless @collabono_calendar.nil?
+      return @collabono_calendar if defined?(@collabono_calendar)
 
       @collabono_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[2]/tbody")
     end 
 
     def doc
-      return @doc unless @doc.nil?
+      return @doc if defined?(@doc)
       charset = 'utf-8'
       html = URI.open(URL) { |f| f.read }
       document = Nokogiri::HTML.parse(html, nil, charset)
