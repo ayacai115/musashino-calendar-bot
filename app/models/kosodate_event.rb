@@ -30,10 +30,10 @@ class KosodateEvent
       result = DynamoDB.scan(TABLE_NAME)
       items = result.items.filter { |item| item["date"].start_with?("#{year}-#{month}") }
 
-      filter_by_date(items, date) if date
-      filter_by_name(items, name) if name
+      items = filter_by_date(items, date) if date
+      items = filter_by_name(items, name) if name
 
-      items
+      parse(items)
     end
 
     def all
@@ -41,18 +41,18 @@ class KosodateEvent
       parse(items)
     end
 
+    private
+
     # KosodateEventインスタンスに変換する
     def parse(items)
       items.map do |item|
-        new(date: item["date"],
+        new(date: Date.parse(item["date"]),
             name: item["name"],
             place: item["place"],
             url: item["url"],
             booking_required: item["booking_required"])
       end
     end
-
-    private
 
     def filter_by_date(items, date)
     end
