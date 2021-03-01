@@ -66,4 +66,13 @@ RSpec.describe KosodateEvent do
       expect([true, false]).to include(event.booking_required)
     end
   end
+
+  describe ".bulk_insert" do
+    example "一括で保存できる" do
+      events = build_list(:kosodate_event, 10)
+      KosodateEvent.bulk_insert(events)
+
+      expect(KosodateEvent.all.count).to be(10)
+    end
+  end
 end

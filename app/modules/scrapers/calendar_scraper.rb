@@ -35,7 +35,7 @@ class CalendarScraper
       )
       end
 
-      KosodateEvent.bulk_save(events)
+      KosodateEvent.bulk_insert(events)
     end
 
     private

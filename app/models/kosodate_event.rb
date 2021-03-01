@@ -44,18 +44,11 @@ class KosodateEvent
       parse(items)
     end
 
-    private
-
-    # KosodateEventインスタンスに変換する
-    def parse(items)
-      items.map do |item|
-        new(date: Date.parse(item["date"]),
-            name: item["name"],
-            place: item["place"],
-            url: item["url"],
-            booking_required: item["booking_required"])
-      end
+    def bulk_insert(events)
+      events.each { |event| event.save! }
     end
+
+    private
 
     def filter_by_year_month(items, year, month)
       items.filter { |item| item.date.year == year && item.date.month == month }
@@ -67,7 +60,18 @@ class KosodateEvent
 
     def filter_by_name(items, name)
       items.filter { |item| name.include?(item.name) }
-    end 
+    end
+    
+    # KosodateEventインスタンスに変換する
+    def parse(items)
+      items.map do |item|
+        new(date: Date.parse(item["date"]),
+            name: item["name"],
+            place: item["place"],
+            url: item["url"],
+            booking_required: item["booking_required"])
+      end
+    end
   end
 
   # class << self
