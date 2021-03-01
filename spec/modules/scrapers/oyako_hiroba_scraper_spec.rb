@@ -11,7 +11,7 @@ RSpec.describe OyakoHirobaScraper do
     end
 
     example "来月の親子ひろば予定を取得する" do
-      events = OyakoHirobaScraper(next_month: true)
+      events = OyakoHirobaScraper.run(next_month: true)
 
       event = events.first
       expect(event).to be_instance_of(KosodateEvent)
