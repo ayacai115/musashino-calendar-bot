@@ -41,7 +41,7 @@ class CalendarScraper
 
       document
     end
-    
+
     def scrape(calendar_table)
       year_month = calendar_table.xpath("caption").text.scan(/\d+/).join("-") # 例：2021-1
       rows = calendar_table.xpath("tr")[1..] # 1行目はヘッダなので除く
