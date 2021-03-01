@@ -6,8 +6,8 @@ class OyakoHirobaScraper
   URL = 'http://www.city.musashino.lg.jp/shiminsanka/kodomokatei/kodomoseisaku/1012272.html'.freeze
 
   class << self
-    def run
-      events = com_center_events.concat(collabono_events)
+    def run(next_month: false)
+      events = com_center_events(next_month) + collabono_events(next_month)
 
       events.map! do |event|
         KosodateEvent.new(
@@ -19,35 +19,18 @@ class OyakoHirobaScraper
         )
       end
 
-      KosodateEvent.bulk_save(events)
+      events
     end
 
     private 
 
-    def doc
-      return @doc unless @doc.nil?
-      charset = 'utf-8'
-      html = URI.open(URL) { |f| f.read }
-      document = Nokogiri::HTML.parse(html, nil, charset)
-
-      # <br>タグを改行（\n）に変えておくとスクレイピングしやすくなる。
-      document.search('br').each { |n| n.replace("\n") }
-
-      document
-    end
-
     # コミセン親子ひろば
-    def com_center_calendar
-      return @com_center_calendar unless @com_center_calendar.nil?
-
-      @com_center_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[1]/tbody")
-    end
-
-    def com_center_events
+    def com_center_events(next_month)
       rows = com_center_calendar.xpath("tr") # 1行目はヘッダなので除く
+      td = next_month ? "td[3]" : "td[2]"
 
       events = rows.map do |row|
-        date_element = row.xpath("td[3]").text
+        date_element = row.xpath(td).text
         date = Date.strptime(date_element, '%m月%d日')
 
         place = row.xpath("td[1]").text
@@ -60,18 +43,19 @@ class OyakoHirobaScraper
       events.compact!
     end
 
+    def com_center_calendar
+      return @com_center_calendar if defined?(@com_center_calendar)
+
+      @com_center_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[1]/tbody")
+    end
+
     # こらぼのコミセン親子ひろば
-    def collabono_calendar
-      return @collabono_calendar unless @collabono_calendar.nil?
-
-      @collabono_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[2]/tbody")
-    end 
-
-    def collabono_events
+    def collabono_events(next_month)
       rows = collabono_calendar.xpath("tr") # 1行目はヘッダなので除く
+      td = next_month ? "td[3]" : "td[2]"
 
       events = rows.map do |row|
-        date_elements = row.xpath("td[3]").text.split("\n") # 例: "3月1日（月曜日）\n3月15日（月曜日）\n"
+        date_elements = row.xpath(td).text.split("\n") # 例: "3月1日（月曜日）\n3月15日（月曜日）\n"
         dates = date_elements.map do |d|
           Date.strptime(d, '%m月%d日')
         rescue Date::Error
@@ -85,6 +69,24 @@ class OyakoHirobaScraper
       end
 
       events.flatten!(1) # 1列に複数日付があるため、配列が1段深くなっている
+    end
+
+    def collabono_calendar
+      return @collabono_calendar if defined?(@collabono_calendar)
+
+      @collabono_calendar = doc.xpath("//div[@id='wrapbg']/div[@id='wrap']/div[@id='pagebody']/div[@id='content']/div[@id='voice']/table[2]/tbody")
+    end 
+
+    def doc
+      return @doc if defined?(@doc)
+      charset = 'utf-8'
+      html = URI.open(URL) { |f| f.read }
+      document = Nokogiri::HTML.parse(html, nil, charset)
+
+      # <br>タグを改行（\n）に変えておくとスクレイピングしやすくなる。
+      document.search('br').each { |n| n.replace("\n") }
+
+      document
     end
   end
 end
