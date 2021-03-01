@@ -27,15 +27,23 @@ module DynamodbReset
         table_name: TABLE_NAME,
         key_schema: [
           {
-            attribute_name: 'year_month',
+            attribute_name: 'date',
             key_type: 'HASH'  # Partition key.
           },
+          {
+            attribute_name: 'name',
+            key_type: 'RANGE'  # Partition key.
+          }
         ],
         attribute_definitions: [
           {
-            attribute_name: 'year_month',
+            attribute_name: 'date',
             attribute_type: 'S'
           },
+          {
+            attribute_name: 'name',
+            attribute_type: 'S'
+          }
         ],
         provisioned_throughput: {
           read_capacity_units: 1,

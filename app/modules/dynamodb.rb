@@ -10,6 +10,10 @@ class DynamoDB
       client.get_item(table_name: table_name, key: key)
     end
 
+    def scan(table_name)
+      client.scan(table_name: table_name)
+    end
+
     private
 
     def client

@@ -9,5 +9,6 @@ gem 'nokogiri'
 group :test do 
   gem 'rspec'
   gem 'factory_bot'
+  gem 'faker'
   gem 'pry-byebug'
 end

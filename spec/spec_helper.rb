@@ -1,4 +1,5 @@
 require 'pry-byebug'
+require 'faker'
 require_relative 'support/factory_bot.rb'
 require_relative 'support/dynamodb_reset.rb'
 
