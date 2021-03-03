@@ -16,7 +16,7 @@ class KosodateEvent
   def save!
     item = {
       date: formatted_date,
-      name: name,
+      name: formatted_name,
       place: place,
       url: url,
       booking_required: booking_required
@@ -27,6 +27,14 @@ class KosodateEvent
 
   def formatted_date
     date.strftime('%Y-%m-%d')
+  end
+
+  def formatted_name
+    oyako_hiroba? ? "#{name}_#{place}" : name
+  end
+
+  def oyako_hiroba?
+    name == "コミセン親子ひろば"
   end
 
   class << self
@@ -52,7 +60,7 @@ class KosodateEvent
       events.map! do |event|
         {
           date: event.formatted_date,
-          name: event.name,
+          name: event.formatted_name,
           place: event.place,
           url: event.url,
           booking_required: event.booking_required
@@ -79,11 +87,20 @@ class KosodateEvent
     # KosodateEventインスタンスに変換する
     def parse(items)
       items.map do |item|
+        name = remove_place(item["name"])
         new(date: Date.parse(item["date"]),
-            name: item["name"],
+            name: name,
             place: item["place"],
             url: item["url"],
             booking_required: item["booking_required"])
+      end
+    end
+
+    def remove_place(name)
+      if name.start_with?("コミセン親子ひろば")
+        "コミセン親子ひろば"
+      else
+        name
       end
     end
   end
