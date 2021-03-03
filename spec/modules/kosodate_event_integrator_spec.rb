@@ -14,7 +14,7 @@ RSpec.describe KosodateEventIntegrator do
       allow(OyakoHirobaScraper).to receive(:run).and_return([oyako_hiroba_event])
 
       KosodateEventIntegrator.run 
-      
+
       events = KosodateEvent.all
       expect(events.count).to eq(1)
 
