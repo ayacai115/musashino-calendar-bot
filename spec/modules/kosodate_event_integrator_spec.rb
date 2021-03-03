@@ -24,6 +24,16 @@ RSpec.describe KosodateEventIntegrator do
     end
 
     example "親子ひろばが無い場合は、イベントそのものを追加する" do
+      calendar_event = build(:kosodate_event, date: Date.today, name: "児童館・3月トランポリンの日")
+      oyako_hiroba_event = build(:kosodate_event, date: Date.today, name: "コミセン親子ひろば", place: "吉祥寺東")
+
+      allow(CalendarScraper).to receive(:run).and_return([calendar_event])
+      allow(OyakoHirobaScraper).to receive(:run).and_return([oyako_hiroba_event])
+
+      KosodateEventIntegrator.run
+
+      events = KosodateEvent.all
+      expect(events.count).to eq(2)
     end
   end
 end
