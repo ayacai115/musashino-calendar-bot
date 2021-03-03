@@ -13,7 +13,7 @@ class CalendarScraper
       events = scrape(calendar_table)
       events = convert_to_kosodate_event(events)
 
-      KosodateEvent.bulk_insert(events)
+      events
     end
 
     private
