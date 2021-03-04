@@ -8,6 +8,11 @@ RSpec.configure do |config|
     DynamodbReset.table
   end
 
+  # line/bot用の設定
+  LINE_CHANNEL_ID = ''
+  LINE_CHANNEL_SECRET = ''
+  LINE_CHANNEL_TOKEN = ''
+
   # 以下デフォルト設定のまま
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
