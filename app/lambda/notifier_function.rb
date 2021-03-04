@@ -12,12 +12,8 @@ def client
 end
 
 def run(event:, context:)
-  events = KosodateEvent.where(year: '2021', month: '02')
-
+  date = Date.today
+  events = KosodateEvent.where(year: date.year, month: date.month)
   messages = BroadcastFormatter.format(events)
   client.broadcast(messages)
-
-  { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
 end
-
-run(event: nil, context: nil) # テスト用
