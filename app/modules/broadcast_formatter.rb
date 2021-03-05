@@ -5,7 +5,7 @@ class BroadcastFormatter
 
   class << self
     def format(events)
-      schedule = events.group_by{ |event| event.date }
+      schedule = events.group_by{ |event| event.date }.sort
 
       formatted_schedule = schedule.map do |date, event_items|
         event_items.map! do |event|
