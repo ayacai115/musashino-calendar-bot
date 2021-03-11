@@ -22,7 +22,11 @@ module MessageFormatter
     private
 
     def build_event_detail(event)
-      "\n#{event.name} #{BOOKING_REQUIRED if event.booking_required} \n#{event.url}\n" 
+      if event.oyako_hiroba?
+        "\n#{event.name}@#{event.place} #{BOOKING_REQUIRED if event.booking_required} \n#{event.url}\n" 
+      else
+        "\n#{event.name} #{BOOKING_REQUIRED if event.booking_required} \n#{event.url}\n" 
+      end
     end
 
     def formatted_message(schedule)
