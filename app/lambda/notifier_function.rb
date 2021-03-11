@@ -1,7 +1,7 @@
 require 'json'
 require 'line/bot'
 require_relative '../models/kosodate_event.rb'
-require_relative '../modules/broadcast_formatter.rb'
+require_relative '../modules/message_formatter.rb'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -14,6 +14,6 @@ end
 def run(event:, context:)
   date = Date.today
   events = KosodateEvent.where(year: date.year, month: date.month)
-  messages = BroadcastFormatter.format(events)
+  messages = MessageFormatter.format(events)
   client.broadcast(messages)
 end

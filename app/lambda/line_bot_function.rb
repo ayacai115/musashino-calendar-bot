@@ -1,5 +1,6 @@
 require 'json'
 require 'line/bot'
+require_relative '../modules/reply_formatter.rb'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -22,6 +23,7 @@ def answer(event:, context:)
       case event.type
       # テキストだったとき
       when Line::Bot::Event::MessageType::Text
+
         message = {
           type: 'text',
           text: event.message['text'] # 同じ言葉を返す
