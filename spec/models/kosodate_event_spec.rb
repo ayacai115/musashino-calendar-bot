@@ -46,10 +46,15 @@ RSpec.describe KosodateEvent do
 
   describe ".all" do
     example "全件取得する" do
-      create_list(:kosodate_event, 10)
+      date = Date.today
+      create(:kosodate_event, date: date)
+      create(:kosodate_event, date: date + 1)
+      create(:kosodate_event, date: date + 2)
+      create(:kosodate_event, date: date + 3)
+      create(:kosodate_event, date: date + 4)
       
       events = KosodateEvent.all
-      expect(events.count).to eq(10)
+      expect(events.count).to eq(5)
 
       event = events.first
       expect(event.date).to be_an_instance_of(Date)
