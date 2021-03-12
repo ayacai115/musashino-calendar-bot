@@ -10,6 +10,12 @@ RSpec.describe CalendarScraper do
       expect(event.date.month).to eq(Date.today.month)
     end
 
+    example "親子ひろばは除外する" do
+      events = CalendarScraper.run
+
+      expect(events.any? { |event| event.name == "コミセン親子ひろば" }).to be_falsey
+    end
+
     # 実装は正しい。しかし4月分のカレンダーが白紙なので失敗する
     # スタブ作るか、、、うーむ
     example "来月の子育てイベント情報を取得する" do
