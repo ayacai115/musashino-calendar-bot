@@ -12,6 +12,7 @@ class CalendarScraper
 
       events = scrape(calendar_table)
       events = convert_to_kosodate_event(events)
+      events = omit_oyako_hiroba(events)
 
       events
     end
@@ -69,6 +70,11 @@ class CalendarScraper
           booking_required: event[1].text.include?("事前申込必要")
       )
       end
+    end
+
+    # 同日に複数親子ひろばが開催されてもカレンダーは1つしか表示されないため、カレンダーからは除外する
+    def omit_oyako_hiroba(events)
+      events.select {|event| event.name != "コミセン親子ひろば"}
     end
   end
 end
