@@ -5,6 +5,7 @@ gem 'aws-sdk-dynamodb'
 
 gem 'line-bot-api'
 gem 'nokogiri'
+gem 'natto'
 
 group :test do 
   gem 'rspec'
