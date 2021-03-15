@@ -23,11 +23,7 @@ def answer(event:, context:)
       case event.type
       # テキストだったとき
       when Line::Bot::Event::MessageType::Text
-
-        message = {
-          type: 'text',
-          text: event.message['text'] # 同じ言葉を返す
-        }
+        message = ReplyFormatter.format(event.message['text'])
         client.reply_message(event['replyToken'], message)
       # 画像やビデオが来たとき
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
