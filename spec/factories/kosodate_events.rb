@@ -25,5 +25,21 @@ FactoryBot.define do
     trait :childrens_center do
       name { "児童館・おはなしひろば" }
     end
+
+    trait :current_month do
+      today = Date.today
+      beginning_of_month = today.strftime('%Y-%m-01')
+      end_of_month = Date.new(today.year, today.month, -1)
+
+      date { Faker::Date.between(from: beginning_of_month, to: end_of_month)}
+    end
+
+    trait :next_month do
+      today = Date.today
+      beginning_of_month = today.next_month.strftime('%Y-%m-01')
+      end_of_month = Date.new(today.year, today.next_month.month, -1)
+
+      date { Faker::Date.between(from: beginning_of_month, to: end_of_month)}
+    end
   end
 end
