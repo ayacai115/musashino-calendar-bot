@@ -16,6 +16,10 @@ def answer(event:, context:)
   # signiture = headers['X-Line-Signature'] if headers
   
   events = client.parse_events_from(event['body'])
+  
+  status_code = nil
+  line_response = nil
+
   events.each do |event|
     case event
     # メッセージだったとき
@@ -24,7 +28,12 @@ def answer(event:, context:)
       # テキストだったとき
       when Line::Bot::Event::MessageType::Text
         message = ReplyFormatter.format(event.message['text'])
-        client.reply_message(event['replyToken'], message)
+        puts "input: ", event.message['text']
+        puts "message: ", message
+
+        response = client.reply_message(event['replyToken'], message)
+        status_code = response.code == "200" ? 200 : 500
+        line_response = response
       # 画像やビデオが来たとき
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
@@ -33,6 +42,6 @@ def answer(event:, context:)
       end
     end
   end
-    
-  { statusCode: 200, body: JSON.generate('Hello from Lambda!') }
+
+  { statusCode: status_code, body: { line_response: line_response } }
 end
