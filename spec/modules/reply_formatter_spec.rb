@@ -23,7 +23,7 @@ RSpec.describe ReplyFormatter do
 
       reply = ReplyFormatter.format("来週　桜堤")
       expect(reply[0][:type]).to eq("text")
-      expect(reply[0][:text]).to eq ("まだ「今月」「来月」にしか反応できません。名前や場所検索は今後追加予定です！乞うご期待！")
+      expect(reply[0][:text]).to eq ("まだ「今月」「来月」にしか反応できません$\n名前や場所での検索を今後追加予定です！ご期待ください$$")
     end
   end
 end

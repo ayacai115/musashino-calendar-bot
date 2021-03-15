@@ -26,8 +26,10 @@ RSpec.describe 'Lambda line_bot_function' do
         }.to_json,
         "replyToken": "hoge"
       }
-
-      allow_any_instance_of(Line::Bot::Client).to receive(:reply_message)
+      
+      line_response = double('LINE client response')
+      allow(line_response).to receive(:code).and_return("200")
+      allow_any_instance_of(Line::Bot::Client).to receive(:reply_message).and_return(line_response)
       
       answer(event: event, context: nil)
     end
