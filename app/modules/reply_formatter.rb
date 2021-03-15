@@ -1,3 +1,4 @@
+require 'date'
 require_relative "message_formatter.rb"
 
 module ReplyFormatter
@@ -15,7 +16,7 @@ module ReplyFormatter
                 []
               end
               
-      return no_result_found if events.blank?
+      return no_result_found if events.empty?
 
       MessageFormatter.format(events)
     end
